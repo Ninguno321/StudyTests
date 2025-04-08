@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi App de Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        #test-setup {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        #test-questions {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        form {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], textarea, input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: none;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #game-section {
+            display: none;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .question-card {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+        .answer-option {
+            margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #e9ecef;
+        }
+        .answer-option:hover {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .correct-answer {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .wrong-answer {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+            color: #333;
+        }
+        .explanation h3{
+            color: #007bff;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        #results-section {
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        #results-section h2{
+            color: #28a745;
+        }
+        #results-section p{
+            font-size: 1.1em;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+        #results-section button{
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        #results-section button:hover{
+            background-color: #218838;
+        }
+        #test-list {
+            margin-bottom: 20px;
+        }
+        #test-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        #test-list li {
+            background-color: #e9ecef;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #test-list li span {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #test-list li button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        #test-list li button:hover {
+            background-color: #c82333;
+        }
+        .test-summary {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .test-selection{
+            margin-bottom: 20px;
+        }
+        .test-selection select{
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .red {
+            color: red;
+        }
+
+        .green {
+            color: green;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crea tu Test</h1>
+
+        <div id="test-list">
+            <h2>Lista de Tests</h2>
+            <ul id="test-list-ul">
+            </ul>
+        </div>
+        <div class="test-selection">
+            <h2>Selecciona un Test</h2>
+            <select id="test-select">
+            </select>
+        </div>
+
+        <div id="test-setup" style="display: block;">
+            <h2>Configuración del Test</h2>
+            <input type="text" id="test-name" placeholder="Nombre del Test">
+            <input type="text" id="test-subject" placeholder="Materia (Ej: Matemáticas, Historia)">
+            <button id="create-test">Crear Nuevo Test</button>
+        </div>
+
+        <div id="test-questions" style="display: none;">
+            <h2>Preguntas</h2>
+            <form id="question-form">
+                <label for="question-text">Pregunta:</label>
+                <textarea id="question-text" rows="2" required></textarea>
+                <label for="answer-1">Respuesta 1:</label>
+                <input type="text" id="answer-1" required>
+                <label for="answer-2">Respuesta 2:</label>
+                <input type="text" id="answer-2" required>
+                <label for="answer-3">Respuesta 3:</label>
+                <input type="text" id="answer-3" required>
+                <label for="correct-answer">Respuesta Correcta (1, 2 o 3):</label>
+                <input type="number" id="correct-answer" min="1" max="3" required>
+                <label for="explanation">Explicación:</label>
+                <textarea id="explanation" rows="2"></textarea>
+                <button type="submit">Añadir Pregunta</button>
+            </form>
+            <div id="questions-list">
+            </div>
+            <button id="delete-questions" style="background-color: #dc3545; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 1em; margin-top: 10px;">Borrar Todas las Preguntas</button>
+        </div>
+
+        <button id="start-game">Jugar Test</button>
+        <button id="go-to-home" style="display: none;">Volver al Inicio</button>
+
+        <div id="game-section" style="display: none;">
+            <h2>Juego</h2>
+            <div id="game-question">
+            </div>
+            <button id="check-answer" style="display: none;">Enviar Respuesta</button>
+            <button id="next-question" style="display: none;">Siguiente Pregunta</button>
+            <div id="results-section" style="display: none;">
+                <h2>Resultados</h2>
+                <p>Tu puntuación: <span id="final-score">0</span> / <span id="total-questions">0</span></p>
+                <button id="restart-game">Volver a Jugar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questionForm = document.getElementById('question-form');
+        const questionsList = document.getElementById('questions-list');
+        const startGameButton = document.getElementById('start-game');
+        const gameSection = document.getElementById('game-section');
+        const gameQuestionDiv = document.getElementById('game-question');
+        const checkAnswerButton = document.getElementById('check-answer');
+        const nextQuestionButton = document.getElementById('next-question');
+        const testNameInput = document.getElementById('test-name');
+        const testSubjectInput = document.getElementById('test-subject');
+        const resultsSection = document.getElementById('results-section');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const totalQuestionsDisplay = document.getElementById('total-questions');
+        const restartGameButton = document.getElementById('restart-game');
+        const testList = document.getElementById('test-list');
+        const testListUl = document.getElementById('test-list-ul');
+        const createTestButton = document.getElementById('create-test');
+        const testSelect = document.getElementById('test-select');
+        const goToHomeButton = document.getElementById('go-to-home');
+        const deleteQuestionsButton = document.getElementById('delete-questions');
+        const testSetup = document.getElementById('test-setup');
+        const testQuestions = document.getElementById('test-questions');
+
+        let tests = JSON.parse(localStorage.getItem('tests')) || {};
+        let currentTestName = "";
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userScore = 0;
+        let gameStarted = false;
+        let selectedAnswerIndex = null;
+
+        function saveTests() {
+            localStorage.setItem('tests', JSON.stringify(tests));
+        }
+
+        function displayTestList() {
+            testListUl.innerHTML = '';
+            testSelect.innerHTML = '';
+            if (Object.keys(tests).length === 0) {
+                testListUl.innerHTML = '<p>No hay tests disponibles. ¡Crea uno!</p>';
+                startGameButton.disabled = true;
+                testSelect.disabled = true;
+                startGameButton.style.display = 'none';
+            } else {
+                startGameButton.disabled = false;
+                testSelect.disabled = false;
+                startGameButton.style.display = 'block';
+                for (const testName in tests) {
+                    const test = tests[testName];
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span>${testName} - ${test.subject}</span>`;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Borrar Test';
+                    deleteButton.addEventListener('click', () => {
+                        deleteTest(testName);
+                    });
+                    listItem.appendChild(deleteButton);
+                    if(test.lastResult){
+                        if(test.lastResult.correctAnswers / test.lastResult.totalQuestions > 0.5){
+                            listItem.firstChild.classList.add('green')
+                        }
+                        else{
+                            listItem.firstChild.classList.add('red')
+                        }
+                    }
+                    testListUl.appendChild(listItem);
+
+                    const option = document.createElement('option');
+                    option.value = testName;
+                    option.textContent = `${testName} - ${test.subject}`;
+                    testSelect.appendChild(option);
+                }
+            }
+        }
+
+        function deleteTest(testName) {
+            if (confirm(`¿Estás seguro de que quieres borrar el test "${testName}"?`)) {
+                delete tests[testName];
+                saveTests();
+                displayTestList();
+                if (currentTestName === testName) {
+                    currentTestName = "";
+                    testQuestions.style.display = 'none';
+                    startGameButton.style.display = 'none';
+                    gameSection.style.display = 'none';
+                    testSetup.style.display = 'block';
+                    questions = [];
+                    questionsList.innerHTML = '';
+                }
+            }
+        }
+
+        function loadTest(selectedTestName) {
+            if (tests[selectedTestName]) {
+                currentTestName = selectedTestName;
+                questions = tests[selectedTestName].questions || [];
+                testNameInput.value = selectedTestName;
+                testSubjectInput.value = tests[selectedTestName].subject;
+                displayQuestions();
+                testQuestions.style.display = 'block';
+                startGameButton.style.display = 'block';
+                gameSection.style.display = 'none';
+                testSetup.style.display = 'block';
+            }
+        }
+
+        testSelect.addEventListener('change', () => {
+            loadTest(testSelect.value);
+        });
+
+        createTestButton.addEventListener('click', () => {
+            const newTestName = testNameInput.value.trim();
+            const newTestSubject = testSubjectInput.value.trim();
+
+            if (!newTestName || !newTestSubject) {
+                alert('Por favor, ingresa el nombre y la materia del test.');
+                return;
+            }
+
+            if (tests[newTestName]) {
+                if (confirm(`Ya existe un test con el nombre "${newTestName}". ¿Quieres añadir preguntas a este test?`)) {
+                    currentTestName = newTestName;
+                    questions = tests[currentTestName].questions || [];
+                    displayQuestions();
+                    testQuestions.style.display = 'block';
+                    startGameButton.style.display = 'block';
+                    gameSection.style.display = 'none';
+                } else {
+                    alert('Por favor, elige otro nombre para el test.');
+                    return;
+                }
+            } else {
+                currentTestName = newTestName;
+                tests[currentTestName] = {
+                    subject: newTestSubject,
+                    questions: [],
+                    lastResult: null
+                };
+                questions = [];
+                saveTests();
+                displayTestList();
+                displayQuestions();
+                testQuestions.style.display = 'block';
+                startGameButton.style.display = 'block';
+                gameSection.style.display = 'none';
+            }
+            deleteQuestionsButton.style.display = (questions.length > 0) ? 'block' : 'none';
+        });
+
+        questionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const questionText = document.getElementById('question-text').value.trim();
+            const answer1 = document.getElementById('answer-1').value.trim();
+            const answer2 = document.getElementById('answer-2').value.trim();
+            const answer3 = document.getElementById('answer-3').value.trim();
+            const correctAnswer = parseInt(document.getElementById('correct-answer').value.trim());
+            const explanation = document.getElementById('explanation').value.trim();
+
+            if (correctAnswer < 1 || correctAnswer > 3) {
+                alert('La respuesta correcta debe ser 1, 2 o 3.');
+                return;
+            }
+
+            if (!questionText || !answer1 || !answer2 || !answer3) {
+                alert('Por favor, completa todos los campos de la pregunta y las respuestas.');
+                return;
+            }
+
+            const newQuestion = {
+                question: questionText,
+                answers: [answer1, answer2, answer3],
+                correctAnswer: correctAnswer,
+                explanation: explanation
+            };
+
+            if (!tests[currentTestName]) {
+                tests[currentTestName] = { 
+                    subject: testSubjectInput.value, 
+                    questions: [], 
+                    lastResult: null 
+                };
+            }
+            
+            tests[currentTestName].questions.push(newQuestion);
+            questions = tests[currentTestName].questions;
+            saveTests();
+            displayQuestions();
+            questionForm.reset();
+        });
+
+        function displayQuestions() {
+            questionsList.innerHTML = '<h3>Lista de Preguntas</h3>';
+            if(questions.length === 0){
+                questionsList.innerHTML += `<p>No hay preguntas en este test. Añade una pregunta.</p>`;
+                startGameButton.disabled = true;
+                deleteQuestionsButton.style.display = 'none';
+            }
+            else{
+                startGameButton.disabled = false;
+                deleteQuestionsButton.style.display = 'block';
+                questions.forEach((q, index) => {
+                    const questionItem = document.createElement('div');
+                    questionItem.classList.add('question-card');
+                    questionItem.innerHTML = `<p><strong>${index + 1}. ${q.question}</strong></p>
+                                                <p>1. ${q.answers[0]}</p>
+                                                <p>2. ${q.answers[1]}</p>
+                                                <p>3. ${q.answers[2]}</p>
+                                                <p><strong>Respuesta Correcta:</strong> ${q.correctAnswer}</p>
+                                                <p><strong>Explicación:</strong> ${q.explanation}</p>`;
+                    questionsList.appendChild(questionItem);
+                });
+            }
+        }
+
+        startGameButton.addEventListener('click', () => {
+            if (!currentTestName) {
+                alert("Seleccione un Test para Jugar");
+                return;
+            }
+            if (!tests[currentTestName] || tests[currentTestName].questions.length === 0) {
+                alert('Por favor, agrega preguntas al test.');
+                return;
+            }
+            iniciarJuego();
+        });
+
+        function iniciarJuego() {
+            gameStarted = true;
+            currentQuestionIndex = 0;
+            userScore = 0;
+            testSetup.style.display = 'none';
+            testQuestions.style.display = 'none';
+            gameSection.style.display = 'block';
+            startGameButton.style.display = 'none';
+            goToHomeButton.style.display = 'block';
+            resultsSection.style.display = 'none';
+            loadQuestion();
+        }
+
+        nextQuestionButton.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < tests[currentTestName].questions.length) {
+                loadQuestion();
+            } else {
+                gameOver();
+            }
+        });
+
+        function loadQuestion() {
+            gameQuestionDiv.innerHTML = '';
+            nextQuestionButton.style.display = 'none';
+            checkAnswerButton.style.display = 'none';
+            const currentQuestion = tests[currentTestName].questions[currentQuestionIndex];
+
+            const questionHTML = document.createElement('div');
+            questionHTML.classList.add('question-card');
+            questionHTML.innerHTML = `<p><strong>${currentQuestionIndex + 1}. ${currentQuestion.question}</strong></p>`;
+
+            currentQuestion.answers.forEach((answer, index) => {
+                const answerOption = document.createElement('div');
+                answerOption.classList.add('answer-option');
+                answerOption.textContent = `${index + 1}. ${answer}`;
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.name = 'answer';
+                radioInput.value = index + 1;
+                radioInput.addEventListener('change', () => {
+                    selectedAnswerIndex = index + 1;
+                    checkAnswerButton.style.display = 'block';
+                });
+                answerOption.prepend(radioInput);
+                questionHTML.appendChild(answerOption);
+            });
+
+            const explanationDiv = document.createElement('div');
+            explanationDiv.classList.add('explanation');
+            explanationDiv.innerHTML = `<h3>Explicación</h3><p>${currentQuestion.explanation}</p>`;
+            explanationDiv.style.display = 'none';
+            questionHTML.appendChild(explanationDiv);
+            gameQuestionDiv.appendChild(questionHTML);
+            selectedAnswerIndex = null;
+        }
+
+        checkAnswerButton.addEventListener('click', () => {
+            if (selectedAnswerIndex === null) {
+                alert('Por favor, selecciona una respuesta.');
+                return;
+            }
+
+            const currentQuestion = tests[currentTestName].questions[currentQuestionIndex];
+            const explanationDiv = document.querySelector('.explanation');
+            const answerOptions = document.querySelectorAll('.answer-option');
+
+            if (selectedAnswerIndex === currentQuestion.correctAnswer) {
+                userScore++;
+                answerOptions[selectedAnswerIndex - 1].classList.add('correct-answer');
+            } else {
+                answerOptions[selectedAnswerIndex - 1].classList.add('wrong-answer');
+                answerOptions[currentQuestion.correctAnswer - 1].classList.add('correct-answer');
+            }
+
+            explanationDiv.style.display = 'block';
+            nextQuestionButton.style.display = 'block';
+            checkAnswerButton.style.display = 'none';
+
+            if (currentQuestionIndex < tests[currentTestName].questions.length - 1) {
+                nextQuestionButton.textContent = 'Siguiente Pregunta';
+            } else {
+                nextQuestionButton.textContent = 'Ver Resultados';
+            }
+        });
+
+        function gameOver() {
+            const totalQuestions = tests[currentTestName].questions.length;
+            tests[currentTestName].lastResult = {
+                correctAnswers: userScore,
+                totalQuestions: totalQuestions
+            }
+            saveTests();
+            displayTestList();
+            gameQuestionDiv.innerHTML = `<h2>Resultados del Test</h2>
+                                        <p>Nombre del Test: <strong>${currentTestName}</strong></p>
+                                        <p>Materia: <strong>${tests[currentTestName].subject}</strong></p>
+                                        <p>Tu puntuación: <span id="final-score">${userScore}</span> / <span id="total-questions">${totalQuestions}</span></p>`;
+            resultsSection.style.display = 'block';
+            gameStarted = false;
+            nextQuestionButton.style.display = 'none';
+            checkAnswerButton.style.display = 'none';
+        }
+
+        restartGameButton.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            userScore = 0;
+            resultsSection.style.display = 'none';
+            gameQuestionDiv.innerHTML = '';
+            gameStarted = true;
+            loadQuestion();
+        });
+
+        goToHomeButton.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            userScore = 0;
+            resultsSection.style.display = 'none';
+            gameQuestionDiv.innerHTML = '';
+            gameStarted = false;
+            testSetup.style.display = 'block';
+            testQuestions.style.display = 'none';
+            startGameButton.style.display = 'block';
+            gameSection.style.display = 'none';
+            goToHomeButton.style.display = 'none';
+            displayTestList();
+        });
+
+        deleteQuestionsButton.addEventListener('click', () => {
+            if (confirm(`¿Estás seguro de que quieres borrar todas las preguntas del test "${currentTestName}"?`)) {
+                tests[currentTestName].questions = [];
+                saveTests();
+                questions = [];
+                displayQuestions();
+                alert('Todas las preguntas han sido borradas.');
+                startGameButton.disabled = true;
+                deleteQuestionsButton.style.display = 'none';
+            }
+        });
+
+        displayTestList();
+        if (Object.keys(tests).length > 0) {
+            loadTest(Object.keys(tests)[0]);
+        }
+    </script>
+</body>
+</html>
