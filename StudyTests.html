@@ -4,209 +4,390 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi App de Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4a6cfa;
+            --primary-dark: #3857e9;
+            --secondary-color: #6a4cff;
+            --accent-color: #ff7846;
+            --success-color: #28c76f;
+            --danger-color: #ea5455;
+            --warning-color: #ff9f43;
+            --info-color: #00cfe8;
+            --dark-color: #283046;
+            --light-color: #f8f8f8;
+            --border-color: #e8e8e8;
+            --text-color: #3d4465;
+            --text-light: #6e6b7b;
+            --box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+        }
+        
         body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 30px 20px;
         }
+        
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
         }
+        
         h1, h2 {
             text-align: center;
-            color: #333;
+            color: var(--dark-color);
+            font-weight: 600;
         }
-        #test-setup {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        #test-questions {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        
+        h2 {
+            font-size: 1.6rem;
+            position: relative;
+            padding-bottom: 12px;
+            margin-top: 30px;
         }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+        }
+        
+        #test-setup, #test-questions, #game-section, #test-list, .test-summary, .test-selection {
+            margin-bottom: 25px;
+            border: none;
+            padding: 25px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        #test-setup:hover, #test-questions:hover, #game-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
         form {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             background-color: #ffffff;
+            transition: all 0.3s ease;
         }
+        
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
         }
-        input[type="text"], textarea, input[type="number"] {
+        
+        input[type="text"], textarea, input[type="number"], select {
             width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: border 0.3s, box-shadow 0.3s;
+            color: var(--text-color);
         }
+        
+        input[type="text"]:focus, textarea:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 108, 250, 0.2);
+        }
+        
         textarea {
             resize: none;
+            min-height: 80px;
         }
+        
         button {
-            padding: 10px 15px;
+            padding: 12px 20px;
             cursor: pointer;
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             margin-right: 10px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(74, 108, 250, 0.25);
         }
+        
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74, 108, 250, 0.35);
         }
-        #game-section {
-            display: none;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        
+        #delete-questions, #test-list li button {
+            background: linear-gradient(135deg, var(--danger-color), #f55862);
+            box-shadow: 0 4px 10px rgba(234, 84, 85, 0.25);
         }
+        
+        #delete-questions:hover, #test-list li button:hover {
+            background: linear-gradient(135deg, #f55862, var(--danger-color));
+            box-shadow: 0 6px 15px rgba(234, 84, 85, 0.35);
+        }
+        
+        #results-section button {
+            background: linear-gradient(135deg, var(--success-color), #24e280);
+            box-shadow: 0 4px 10px rgba(40, 199, 111, 0.25);
+        }
+        
+        #results-section button:hover {
+            background: linear-gradient(135deg, #24e280, var(--success-color));
+            box-shadow: 0 6px 15px rgba(40, 199, 111, 0.35);
+        }
+        
         .question-card {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            background-color: #ffffff;
-        }
-        .answer-option {
-            margin-bottom: 5px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: #e9ecef;
-        }
-        .answer-option:hover {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .correct-answer {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-        .wrong-answer {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-        .explanation {
-            margin-top: 10px;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            display: none;
-            color: #333;
-        }
-        .explanation h3{
-            color: #007bff;
-            font-size: 1.2em;
-            margin-bottom: 5px;
-        }
-        #results-section {
-            margin-top: 20px;
-            text-align: center;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        #results-section h2{
-            color: #28a745;
-        }
-        #results-section p{
-            font-size: 1.1em;
-            color: #343a40;
-            margin-bottom: 10px;
-        }
-        #results-section button{
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        #results-section button:hover{
-            background-color: #218838;
-        }
-        #test-list {
             margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
+        
+        .question-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .answer-option {
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .answer-option:hover {
+            background-color: #f0f7ff;
+            border-color: var(--primary-color);
+            transform: translateX(3px);
+        }
+        
+        .answer-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .correct-answer {
+            background-color: rgba(40, 199, 111, 0.15);
+            border-color: var(--success-color);
+            color: #0c6b39;
+        }
+        
+        .wrong-answer {
+            background-color: rgba(234, 84, 85, 0.15);
+            border-color: var(--danger-color);
+            color: #93151a;
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            background-color: #f9fafb;
+            border-radius: 8px;
+            display: none;
+            color: var(--text-color);
+        }
+        
+        .explanation h3 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        
+        #results-section {
+            margin-top: 30px;
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #ffffff, #f9fafb);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        #results-section h2 {
+            color: var(--success-color);
+        }
+        
+        #results-section p {
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
         #test-list ul {
             list-style: none;
             padding: 0;
         }
+        
         #test-list li {
-            background-color: #e9ecef;
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 5px;
+            background-color: #f9fafb;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
         }
+        
+        #test-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
         #test-list li span {
             margin-right: 10px;
-            font-weight: bold;
+            font-weight: 600;
         }
-        #test-list li button {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
+        
+        .test-selection select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d4465' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+        }
+        
+        .red {
+            color: var(--danger-color);
+            font-weight: 500;
+        }
+        
+        .green {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+        
+        #questions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #f0f0f0;
+        }
+        
+        #questions-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #questions-list::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+        
+        #questions-list::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 8px;
+        }
+        
+        .question-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        
+        .edit-question-btn {
+            background: linear-gradient(135deg, var(--warning-color), #ffa85a);
+            box-shadow: 0 4px 10px rgba(255, 159, 67, 0.25);
+            padding: 8px 15px;
             font-size: 0.9em;
         }
-        #test-list li button:hover {
-            background-color: #c82333;
+        
+        .edit-question-btn:hover {
+            background: linear-gradient(135deg, #ffa85a, var(--warning-color));
+            box-shadow: 0 6px 15px rgba(255, 159, 67, 0.35);
         }
-        .test-summary {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        
+        .delete-question-btn {
+            background: linear-gradient(135deg, var(--danger-color), #f55862);
+            box-shadow: 0 4px 10px rgba(234, 84, 85, 0.25);
+            padding: 8px 15px;
+            font-size: 0.9em;
         }
-        .test-selection{
-            margin-bottom: 20px;
+        
+        .delete-question-btn:hover {
+            background: linear-gradient(135deg, #f55862, var(--danger-color));
+            box-shadow: 0 6px 15px rgba(234, 84, 85, 0.35);
         }
-        .test-selection select{
-            width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            
+            .question-buttons {
+                flex-direction: column;
+            }
         }
-        .red {
-            color: red;
-        }
-
-        .green {
-            color: green;
-        }
-
     </style>
 </head>
 <body>
@@ -455,7 +636,19 @@
                 };
             }
             
-            tests[currentTestName].questions.push(newQuestion);
+            if (questionForm.dataset.editing === "true") {
+                const editIndex = parseInt(questionForm.dataset.editIndex);
+                tests[currentTestName].questions[editIndex] = newQuestion;
+                
+                delete questionForm.dataset.editing;
+                delete questionForm.dataset.editIndex;
+                
+                const submitButton = questionForm.querySelector('button[type="submit"]');
+                submitButton.textContent = 'Añadir Pregunta';
+            } else {
+                tests[currentTestName].questions.push(newQuestion);
+            }
+            
             questions = tests[currentTestName].questions;
             saveTests();
             displayQuestions();
@@ -481,8 +674,60 @@
                                                 <p>3. ${q.answers[2]}</p>
                                                 <p><strong>Respuesta Correcta:</strong> ${q.correctAnswer}</p>
                                                 <p><strong>Explicación:</strong> ${q.explanation}</p>`;
+                    
+                    const buttonsContainer = document.createElement('div');
+                    buttonsContainer.classList.add('question-buttons');
+                    
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Editar';
+                    editButton.classList.add('edit-question-btn');
+                    editButton.addEventListener('click', () => {
+                        editQuestion(index);
+                    });
+                    buttonsContainer.appendChild(editButton);
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Borrar';
+                    deleteButton.classList.add('delete-question-btn');
+                    deleteButton.addEventListener('click', () => {
+                        deleteQuestion(index);
+                    });
+                    buttonsContainer.appendChild(deleteButton);
+                    
+                    questionItem.appendChild(buttonsContainer);
                     questionsList.appendChild(questionItem);
                 });
+            }
+        }
+
+        function editQuestion(index) {
+            const question = questions[index];
+            
+            document.getElementById('question-text').value = question.question;
+            document.getElementById('answer-1').value = question.answers[0];
+            document.getElementById('answer-2').value = question.answers[1];
+            document.getElementById('answer-3').value = question.answers[2];
+            document.getElementById('correct-answer').value = question.correctAnswer;
+            document.getElementById('explanation').value = question.explanation;
+            
+            questionForm.dataset.editing = "true";
+            questionForm.dataset.editIndex = index;
+            
+            const submitButton = questionForm.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Actualizar Pregunta';
+            
+            questionForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteQuestion(index) {
+            if (confirm('¿Estás seguro de que quieres borrar esta pregunta?')) {
+                questions.splice(index, 1);
+                
+                tests[currentTestName].questions = questions;
+                
+                saveTests();
+                
+                displayQuestions();
             }
         }
 
@@ -594,8 +839,12 @@
             displayTestList();
             gameQuestionDiv.innerHTML = `<h2>Resultados del Test</h2>
                                         <p>Nombre del Test: <strong>${currentTestName}</strong></p>
-                                        <p>Materia: <strong>${tests[currentTestName].subject}</strong></p>
-                                        <p>Tu puntuación: <span id="final-score">${userScore}</span> / <span id="total-questions">${totalQuestions}</span></p>`;
+                                        <p>Materia: <strong>${tests[currentTestName].subject}</strong></p>`;
+            
+            // Update the score display in the results section
+            finalScoreDisplay.textContent = userScore;
+            totalQuestionsDisplay.textContent = totalQuestions;
+            
             resultsSection.style.display = 'block';
             gameStarted = false;
             nextQuestionButton.style.display = 'none';
